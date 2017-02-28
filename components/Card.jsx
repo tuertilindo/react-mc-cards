@@ -1,0 +1,71 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
+const objectAssign = require('object-assign')
+const classnames = require('classnames')
+export default class Card extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {initialPosition: {
+      x: 0,
+      y: 0,
+      r: 0
+
+    },
+    x: 0,
+    y: 0,
+    r: 0}
+  }
+  setInitialPosition () {
+    var screen = document.getElementById('cards'),
+      card = ReactDOM.findDOMNode(this),
+      initialPosition = {
+        x: Math.round((screen.offsetWidth - card.offsetWidth) / 2),
+        y: Math.round(0),
+        r: ((Math.random() / 10) - (Math.random() / 10))
+
+      }
+
+    this.setState({
+      initialPosition: initialPosition
+    })
+  }
+  componentDidMount () {
+    this.setInitialPosition()
+    window.addEventListener('resize', this.setInitialPosition)
+  }
+  componentWillUnmount () {
+    window.removeEventListener('resize', this.setInitialPosition)
+  }
+
+  render () {
+    var initialTranslate = ''.concat(
+      'translate3d(',
+      this.state.x + 'px,',
+      this.state.y + 'px,',
+      '0px) rotate(',
+      this.state.r + 'deg)'
+
+    )
+
+    var styles = objectAssign({}, {
+      msTransform: initialTranslate,
+      WebkitTransform: initialTranslate,
+      transform: initialTranslate,
+      zIndex: this.props.index
+
+    }, this.props.style)
+    var imgstyle = {backgroundImage: 'url("' + this.props.image + '")'}
+    var me = this
+    var classes = classnames(objectAssign({}, {
+      card: true
+    }, me.props.classes))
+
+    return (
+      <div key={this.props.cardId.toString()} style={styles} className={classes}>
+        <div style={imgstyle} className="img"></div>
+        {this.props.children}
+      </div>
+    )
+  }
+
+}
