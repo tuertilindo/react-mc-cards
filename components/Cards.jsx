@@ -1,6 +1,7 @@
 import React from 'react'
 import Reflux from 'Reflux'
 import CardActions from './CardActions.jsx'
+import CardStore from './CardStore.jsx'
 import Card from './Card.jsx'
 import DraggableCard from './DraggableCard.jsx'
 import CardDesc from './CardDesc.jsx'
@@ -15,7 +16,7 @@ export default class Cards extends Reflux.Component {
       extraComponent: CardDesc,
       minCount: 5
     }, props)
-    this.store = props.store
+    this.store = CardStore
     this.onDiscard = props.onDiscard
   }
   render () {
@@ -29,7 +30,8 @@ export default class Cards extends Reflux.Component {
         var props = {
           cardId: c.id,
           index: index,
-          image: c.image
+          image: c.image,
+          rotate: c.rotate
         }
         if (index === (coll.length - 1)) {
           return (<DraggableCard {...props}>
@@ -43,7 +45,7 @@ export default class Cards extends Reflux.Component {
       }, this)
     }
     if (!cardsre || cardsre.length < this.state.minCount) {
-      CardActions.NeedCards()
+      CardActions.NeedCards(this.props.url, this.props.params)
     }
 
     return (

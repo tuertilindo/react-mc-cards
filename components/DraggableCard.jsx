@@ -45,7 +45,6 @@ export default class DraggableCard extends Card {
         }
       },
       panmove: (ev) => {
-        console.log('panmove')
         this.setState(this.calculatePosition(
           ev.deltaX, ev.deltaY
         ))
@@ -70,17 +69,17 @@ export default class DraggableCard extends Card {
     y = this.state.y,
     r = this.state.r
     if (side === 'top') {
-      y = y - 80
+      y = y - 120
     } else if (side === 'right') {
-      x = x + 80
-      y = y + 80
-      r = r + 22
+      x = x + 120
+      y = y + 120
+      r = r + 32
     } else if (side === 'bottom') {
-      y = y + 80
+      y = y + 120
     } else if (side === 'left') {
-      x = x - 80
-      y = y + 80
-      r = r - 22
+      x = x - 120
+      y = y + 120
+      r = r - 32
     }
     var initialPosition = {
       x: x,

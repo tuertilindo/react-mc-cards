@@ -8,25 +8,28 @@ export default class Card extends React.Component {
     this.state = {initialPosition: {
       x: 0,
       y: 0,
-      r: 0
+      r: props.rotate
 
     },
     x: 0,
     y: 0,
-    r: 0}
+    r: props.rotate}
   }
   setInitialPosition () {
     var screen = document.getElementById('cards'),
-      card = ReactDOM.findDOMNode(this),
-      initialPosition = {
-        x: Math.round((screen.offsetWidth - card.offsetWidth) / 2),
-        y: Math.round(0),
-        r: ((Math.random() / 10) - (Math.random() / 10))
+      card = ReactDOM.findDOMNode(this)
+    var initialPosition = {
+      x: Math.round((screen.offsetWidth - card.offsetWidth) / 2),
+      y: 0,
+      r: this.props.rotate
 
-      }
+    }
 
     this.setState({
-      initialPosition: initialPosition
+      initialPosition: initialPosition,
+      x: initialPosition.x,
+      y: initialPosition.y,
+      r: initialPosition.r
     })
   }
   componentDidMount () {
@@ -57,7 +60,8 @@ export default class Card extends React.Component {
     var imgstyle = {backgroundImage: 'url("' + this.props.image + '")'}
     var me = this
     var classes = classnames(objectAssign({}, {
-      card: true
+      card: true,
+      animate: this.state.animation
     }, me.props.classes))
 
     return (

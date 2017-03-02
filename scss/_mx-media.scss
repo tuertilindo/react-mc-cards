@@ -1,0 +1,18 @@
+/* Responsive */
+@mixin respond-to($media) {
+  @if $media == w240port {
+    @media only screen and (max-width: 299px) and (orientation:portrait) { @content; }
+  }
+  @else if $media == w240land {
+    @media only screen and (max-width: 321px) and (orientation:landscape) { @content; }
+  }
+  @else if $media == w320port {
+    @media only screen and (max-width: 399px) and (min-width: 300px) and (orientation:portrait) { @content; }
+  }
+    @else if $media == w320land {
+        @media only screen and (max-width: 499px) and (min-width: 400px) and (orientation:landscape) { @content; }
+    }
+    @else if $media == w480port {
+        @media only screen and (max-width: 599px) and (min-width: 500px) and (orientation:portrait) { @content; }
+      }
+}

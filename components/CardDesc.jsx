@@ -8,7 +8,7 @@ export default class Card extends React.Component {
   render () {
     return (
       <div>
-        <h3>{this.state.text}</h3>
+        <h3>{this.state.name}</h3>
         <p>{this.state.title}</p>
       </div>
     )

@@ -1,0 +1,74 @@
+#cards {
+    position: relative;
+    height: 90%;
+    max-width: 500px;
+    min-height: 400px;
+    max-height: 400px;
+    padding: 5px;
+    margin: auto;
+    @include respond-to(w240port){min-height: 280px;}
+   @include respond-to(w240land){min-height: 180px;}
+    @include respond-to(w320port){min-height: 440px;}
+     @include respond-to(w320land){min-height: 280px;}
+    .card{
+        position: absolute;
+    }
+
+}
+.card {
+
+	height: 89%;
+	width: 92%;
+	margin: 0 auto;
+	border-radius: 3px;
+        color: $card-text-color;
+	box-shadow: 0 0 12px rgba(0, 0, 0, .6);
+	text-align: center;
+	padding: 10px 10px 10px 10px;
+	border: 1px solid rgba(96, 96, 96, 0.2);
+	backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+	background: whitesmoke;
+	cursor: pointer;
+        .img {
+                height: 80%;
+                width: 95%;
+                overflow: hidden;
+                backface-visibility: hidden;
+                -webkit-backface-visibility: hidden;
+                margin: auto;
+                top: 0px;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: cover;
+                -o-background-size: cover;
+                -moz-background-size: cover;
+                -webkit-background-size: cover;
+        }
+        .boton{
+            color: $card-text-color;
+
+            img,i,svg {
+                width: 28px;
+                height: 28px;
+                font-size: 26px;
+                line-height: 28px;
+                padding: 1px;
+                color: $card-text-color;
+            }
+            span{
+                font-size: 16px;
+                color: $card-text-color;
+            }
+            svg g{
+                fill:$card-text-color;
+            }
+        }
+        p{
+            margin: 0;
+        }
+}
+.animate {
+    transition: transform .3s;
+    -webkit-transition: -webkit-transform .3s;
+}

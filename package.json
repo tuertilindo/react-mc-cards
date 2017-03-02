@@ -2,7 +2,7 @@
   "name": "react-mc-cards",
   "version": "1.0.0",
   "description": "React component: cards maze",
-  "main": "index.js",
+  "main": "components/Cards.jsx",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,13 +10,15 @@
     "type": "git",
     "url": "git+https://github.com/tuertilindo/react-mc-cards.git"
   },
-  "dependecies": {
+  "dependencies": {
     "reflux": "6.2.0",
     "whatwg-fetch": "2.0.2",
     "classnames": "^2.2.5",
     "hammerjs": "^2.0.8",
     "object-assign": "4.1.1",
-    "react": "15.4.2"
+    "react": "15.4.2",
+    "react-dom": "^15.3.2"
+
 
   },
   "browserify": {
@@ -41,6 +43,7 @@
     "babelify": "^7.3.0",
     "browserify": "^13.1.0",
     "webpack": "^2.1.0-beta.27"
+
   },
   "keywords": [
     "react",
@@ -49,6 +52,10 @@
     "draggable",
     "tinderable"
   ],
+  "scripts": {
+    "run": "npm run build && browser-sync start --server --startPath \"/example/\"",
+    "build": "browserify main.jsx -o example/bundle.js -t [ babelify --presets [ es2015 react ] ] "
+  },
   "author": "tuertilindo",
   "license": "MIT",
   "bugs": {

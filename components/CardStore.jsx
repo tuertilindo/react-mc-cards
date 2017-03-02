@@ -13,20 +13,23 @@ export default class CardStore extends Reflux.Store {
     }
     this.listenables = CardActions
   }
-  NeedCards () {
+  NeedCards (url, params) {
     if (this.state.barajando) {
       return false
     }
     this.state.barajando = true
-    fetch(this.props.url, this.props.params)
+    fetch(url, params)
     .then((response) => {
       this.status = response.status
       return response.json()
     }).then((data) => {
       this.state.barajando = false
+      data.map((c) => {
+        c.rotate = ((Math.random() * 10) - (Math.random() * 10))
+      })
       var baraja = this.state.cards
       if (baraja) {
-        baraja = baraja.concat(data)
+        baraja = data.concat(baraja)
       }
       this.setState({
         status: this.status,
