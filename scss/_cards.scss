@@ -29,6 +29,10 @@
 	backface-visibility: hidden;
 	-webkit-backface-visibility: hidden;
 	background: whitesmoke;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 	cursor: pointer;
         .img {
                 height: 80%;
