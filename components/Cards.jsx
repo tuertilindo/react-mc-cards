@@ -19,6 +19,12 @@ export default class Cards extends Reflux.Component {
     this.store = CardStore
     this.onDiscard = props.onDiscard
   }
+  shouldComponentUpdate (nextProps, nextState) {
+    if (nextState.discarded || this.state.cards.length < 1) {
+      return true
+    }
+    return false
+  }
   render () {
     if (this.state.discarded && this.onDiscard instanceof Function) {
       this.onDiscard(this.state.discarded)

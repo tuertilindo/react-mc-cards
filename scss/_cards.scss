@@ -4,7 +4,7 @@
     max-width: 500px;
     min-height: 400px;
     max-height: 400px;
-    padding: 5px;
+    padding: 20px 5px 5px 5px;
     margin: auto;
     @include respond-to(w240port){min-height: 280px;}
    @include respond-to(w240land){min-height: 180px;}

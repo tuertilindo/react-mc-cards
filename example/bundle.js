@@ -674,6 +674,14 @@ var Cards = function (_Reflux$Component) {
   }
 
   _createClass(Cards, [{
+    key: 'shouldComponentUpdate',
+    value: function shouldComponentUpdate(nextProps, nextState) {
+      if (nextState.discarded || this.state.cards.length < 1) {
+        return true;
+      }
+      return false;
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
