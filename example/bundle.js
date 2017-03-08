@@ -118,8 +118,7 @@ var Card = function (_React$Component) {
         card: true,
         animate: this.state.animation
       }, me.props.classes));
-
-      return _react2.default.createElement('div', { key: this.props.cardId.toString(), style: styles, className: classes }, _react2.default.createElement('div', { style: imgstyle, className: 'img' }), this.props.children);
+      return _react2.default.createElement('div', { key: this.props.cardId.toString(), style: styles, className: classes }, _react2.default.createElement('div', { style: imgstyle, className: 'img' }), _react2.default.createElement(this.props.extra, this.props.cardData));
     }
   }]);
 
@@ -191,24 +190,19 @@ function _inherits(subClass, superClass) {
   }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 }
 
-var objectAssign = require('object-assign');
-
 var Card = function (_React$Component) {
   _inherits(Card, _React$Component);
 
-  function Card(props) {
+  function Card() {
     _classCallCheck(this, Card);
 
-    var _this = _possibleConstructorReturn(this, (Card.__proto__ || Object.getPrototypeOf(Card)).call(this, props));
-
-    _this.state = objectAssign({}, props.cardData);
-    return _this;
+    return _possibleConstructorReturn(this, (Card.__proto__ || Object.getPrototypeOf(Card)).apply(this, arguments));
   }
 
   _createClass(Card, [{
     key: 'render',
     value: function render() {
-      return _react2.default.createElement('div', null, _react2.default.createElement('h3', null, this.state.name), _react2.default.createElement('p', null, this.state.title));
+      return _react2.default.createElement('div', null, _react2.default.createElement('h3', null, this.props.name), _react2.default.createElement('p', null, this.props.title));
     }
   }]);
 
@@ -217,7 +211,7 @@ var Card = function (_React$Component) {
 
 exports.default = Card;
 
-},{"object-assign":42,"react":195}],4:[function(require,module,exports){
+},{"react":195}],4:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -695,12 +689,14 @@ var Cards = function (_Reflux$Component) {
             cardId: c.id,
             index: index,
             image: c.image,
-            rotate: c.rotate
+            rotate: c.rotate,
+            cardData: c,
+            extra: _this2.state.extraComponent
           };
           if (index === coll.length - 1) {
-            return _react2.default.createElement(_DraggableCard2.default, props, _react2.default.createElement(_this2.state.extraComponent, { cardData: c }));
+            return _react2.default.createElement(_DraggableCard2.default, props);
           } else {
-            return _react2.default.createElement(_Card2.default, props, _react2.default.createElement(_this2.state.extraComponent, { cardData: c }));
+            return _react2.default.createElement(_Card2.default, props);
           }
         }, this);
       }

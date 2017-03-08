@@ -31,16 +31,14 @@ export default class Cards extends Reflux.Component {
           cardId: c.id,
           index: index,
           image: c.image,
-          rotate: c.rotate
+          rotate: c.rotate,
+          cardData: c,
+          extra: this.state.extraComponent
         }
         if (index === (coll.length - 1)) {
-          return (<DraggableCard {...props}>
-            {React.createElement(this.state.extraComponent, {cardData: c})}
-          </DraggableCard>)
+          return (<DraggableCard {...props} />)
         } else {
-          return (<Card {...props}>
-            {React.createElement(this.state.extraComponent, {cardData: c})}
-          </Card>)
+          return (<Card {...props} />)
         }
       }, this)
     }

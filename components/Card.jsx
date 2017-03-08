@@ -63,11 +63,10 @@ export default class Card extends React.Component {
       card: true,
       animate: this.state.animation
     }, me.props.classes))
-
     return (
       <div key={this.props.cardId.toString()} style={styles} className={classes}>
         <div style={imgstyle} className="img"></div>
-        {this.props.children}
+        <this.props.extra {...this.props.cardData} />
       </div>
     )
   }
