@@ -50,8 +50,8 @@ function _inherits(subClass, superClass) {
 var objectAssign = require('object-assign');
 var classnames = require('classnames');
 
-var Card = function (_React$Component) {
-  _inherits(Card, _React$Component);
+var Card = function (_React$PureComponent) {
+  _inherits(Card, _React$PureComponent);
 
   function Card(props) {
     _classCallCheck(this, Card);
@@ -123,7 +123,7 @@ var Card = function (_React$Component) {
   }]);
 
   return Card;
-}(_react2.default.Component);
+}(_react2.default.PureComponent);
 
 exports.default = Card;
 
@@ -423,6 +423,9 @@ var DraggableCard = function (_Card) {
 
     _this.panHandlers = {
       panstart: function panstart() {
+        if (!_this.state.canmove) {
+          return;
+        }
         _this.setState({
           animation: false,
           startPosition: {

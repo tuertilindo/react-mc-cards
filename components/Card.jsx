@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 const objectAssign = require('object-assign')
 const classnames = require('classnames')
-export default class Card extends React.Component {
+export default class Card extends React.PureComponent {
   constructor (props) {
     super(props)
     this.state = {initialPosition: {

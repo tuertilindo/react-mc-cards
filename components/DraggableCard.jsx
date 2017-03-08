@@ -7,6 +7,9 @@ export default class DraggableCard extends Card {
     super(props)
     this.panHandlers = {
       panstart: () => {
+        if (!this.state.canmove) {
+          return
+        }
         this.setState({
           animation: false,
           startPosition: {
