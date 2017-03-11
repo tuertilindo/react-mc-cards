@@ -53,8 +53,8 @@
     "tinderable"
   ],
   "scripts": {
-    "run": "npm run build && browser-sync start --server \"/example/\"",
-    "build": "browserify main.jsx -o example/bundle.js -t [ babelify --presets [ es2015 react ] ] "
+    "run": "npm run build && browser-sync start --server \"www\"",
+    "build": "browserify main.jsx -o www/bundle.js -t [ babelify --presets [ es2015 react ] ] "
   },
   "author": "tuertilindo",
   "license": "MIT",

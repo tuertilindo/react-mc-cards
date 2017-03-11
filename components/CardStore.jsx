@@ -12,6 +12,11 @@ export default class CardStore extends Reflux.Store {
       barajando: false
     }
     this.listenables = CardActions
+    this.currid = 0
+  }
+  idfactory () {
+    this.currid = this.currid + 1
+    return this.currid
   }
   NeedCards (url, params) {
     if (this.state.barajando) {
@@ -26,6 +31,7 @@ export default class CardStore extends Reflux.Store {
       this.state.barajando = false
       data.map((c) => {
         c.rotate = ((Math.random() * 10) - (Math.random() * 10))
+        c.keyid = this.idfactory()
       })
       var baraja = this.state.cards
       if (baraja) {
@@ -57,11 +63,9 @@ export default class CardStore extends Reflux.Store {
     this.discard(card, 'bottom')
   }
   discard (card, side) {
-    var cards = this.state.cards.filter((c) => {
-      return c.id !== card.cardId
-    })
+    this.state.cards.pop()
     this.setState({
-      cards: cards,
+      cards: this.state.cards,
       discarded: {
         card: card,
         side: side

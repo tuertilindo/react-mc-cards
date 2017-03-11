@@ -7,7 +7,7 @@ export default class DraggableCard extends Card {
     super(props)
     this.panHandlers = {
       panstart: () => {
-        if (!this.state.canmove) {
+        if (this.props.idiscard !== this.props.keyid) {
           return
         }
         this.setState({
@@ -20,8 +20,8 @@ export default class DraggableCard extends Card {
         })
       },
       panend: (ev) => {
-        var screen = document.getElementById('cards'),
-        card = ReactDOM.findDOMNode(this)
+        var screen = document.getElementById('cards')
+        var card = ReactDOM.findDOMNode(this)
         var xoff = screen.offsetWidth / 4
         var yoff = screen.offsetHeight / 4
         if (this.state.x < -xoff) {
@@ -29,8 +29,14 @@ export default class DraggableCard extends Card {
           card.addEventListener('transitionend', () => { CardActions.SlideLeft(this.props) }, false)
           this.discard('left')
         } else if ((this.state.x + (card.offsetWidth - xoff)) > screen.offsetWidth) {
-          card.addEventListener('webkitTransitionEnd', () => { CardActions.SlideRight(this.props) }, false)
-          card.addEventListener('transitionend', () => { CardActions.SlideRight(this.props) }, false)
+          card.addEventListener('webkitTransitionEnd', () => {
+            this.resetPosition()
+            CardActions.SlideRight(this.props)
+          }, false)
+          card.addEventListener('transitionend', () => {
+            this.resetPosition()
+            CardActions.SlideRight(this.props)
+          }, false)
           this.discard('right')
         } else if ((this.state.y + (card.offsetHeight - yoff)) > screen.offsetHeight) {
           card.addEventListener('webkitTransitionEnd', () => { CardActions.SlideBottom(this.props) }, false)
@@ -42,12 +48,12 @@ export default class DraggableCard extends Card {
           this.discard('top')
         } else {
           this.resetPosition()
-          this.setState({
-            animation: true
-          })
         }
       },
       panmove: (ev) => {
+        if (this.props.idiscard !== this.props.keyid) {
+          return
+        }
         this.setState(this.calculatePosition(
           ev.deltaX, ev.deltaY
         ))
@@ -63,14 +69,15 @@ export default class DraggableCard extends Card {
         x: this.state.initialPosition.x,
         y: this.state.initialPosition.y,
         r: this.state.initialPosition.r,
-        startPosition: this.state.startPosition
+        startPosition: this.state.initialPosition,
+        animation: true
       }
     )
   }
   discard (side) {
-    var x = this.state.x,
-    y = this.state.y,
-    r = this.state.r
+    var x = this.state.x
+    var y = this.state.y
+    var r = this.state.r
     if (side === 'top') {
       y = y - 120
     } else if (side === 'right') {
@@ -84,17 +91,16 @@ export default class DraggableCard extends Card {
       y = y + 120
       r = r - 32
     }
-    var initialPosition = {
+    var endPosi = {
       x: x,
       y: y,
       r: r
     }
     this.setState(
       {
-        x: initialPosition.x,
-        y: initialPosition.y,
-        r: initialPosition.r,
-        initialPosition: initialPosition,
+        x: endPosi.x,
+        y: endPosi.y,
+        r: endPosi.r,
         startPosition: {
           x: this.state.x,
           y: this.state.y,
@@ -113,6 +119,9 @@ export default class DraggableCard extends Card {
   }
   handleSwipe (ev) {
     console.log(ev.type)
+  }
+  shouldComponentUpdate (nextProps, nextState) {
+    return nextProps.idiscard === nextProps.keyid
   }
   componentDidMount () {
     this.hammer = new Hammer.Manager(ReactDOM.findDOMNode(this))
