@@ -25,26 +25,26 @@ export default class DraggableCard extends Card {
         var xoff = screen.offsetWidth / 4
         var yoff = screen.offsetHeight / 4
         if (this.state.x < -xoff) {
-          card.addEventListener('webkitTransitionEnd', () => { CardActions.SlideLeft(this.props) }, false)
-          card.addEventListener('transitionend', () => { CardActions.SlideLeft(this.props) }, false)
+          card.addEventListener('webkitTransitionEnd', () => { CardActions.SlideLeft(this.props.cardData) }, false)
+          card.addEventListener('transitionend', () => { CardActions.SlideLeft(this.props.cardData) }, false)
           this.discard('left')
         } else if ((this.state.x + (card.offsetWidth - xoff)) > screen.offsetWidth) {
           card.addEventListener('webkitTransitionEnd', () => {
             this.resetPosition()
-            CardActions.SlideRight(this.props)
+            CardActions.SlideRight(this.props.cardData)
           }, false)
           card.addEventListener('transitionend', () => {
             this.resetPosition()
-            CardActions.SlideRight(this.props)
+            CardActions.SlideRight(this.props.cardData)
           }, false)
           this.discard('right')
         } else if ((this.state.y + (card.offsetHeight - yoff)) > screen.offsetHeight) {
-          card.addEventListener('webkitTransitionEnd', () => { CardActions.SlideBottom(this.props) }, false)
-          card.addEventListener('transitionend', () => { CardActions.SlideBottom(this.props) }, false)
+          card.addEventListener('webkitTransitionEnd', () => { CardActions.SlideBottom(this.props.cardData) }, false)
+          card.addEventListener('transitionend', () => { CardActions.SlideBottom(this.props.cardData) }, false)
           this.discard('bottom')
         } else if ((this.state.y + yoff) < 0) {
-          card.addEventListener('webkitTransitionEnd', () => { CardActions.SlideTop(this.props) }, false)
-          card.addEventListener('transitionend', () => { CardActions.SlideTop(this.props) }, false)
+          card.addEventListener('webkitTransitionEnd', () => { CardActions.SlideTop(this.props.cardData) }, false)
+          card.addEventListener('transitionend', () => { CardActions.SlideTop(this.props.cardData) }, false)
           this.discard('top')
         } else {
           this.resetPosition()
