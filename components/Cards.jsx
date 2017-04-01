@@ -27,8 +27,9 @@ export default class Cards extends Reflux.Component {
   }
   render () {
     if (this.state.discarded && this.onDiscard instanceof Function) {
+      var card = this.state.discarded
       this.state.discarded = null
-      this.onDiscard(this.state.discarded)
+      this.onDiscard(card)
     }
     var cardsre = null
     if (!this.state.error && this.state.cards) {
@@ -49,7 +50,6 @@ export default class Cards extends Reflux.Component {
         } else {
           return (<Card {...props} />)
         }
-
       }, this)
     }
 
