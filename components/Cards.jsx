@@ -27,9 +27,9 @@ export default class Cards extends Reflux.Component {
   }
   render () {
     if (this.state.discarded && this.onDiscard instanceof Function) {
+      this.state.discarded = null
       this.onDiscard(this.state.discarded)
     }
-    this.state.discarded = null
     var cardsre = null
     if (!this.state.error && this.state.cards) {
       var idescard = this.state.cards.length > 0 ? this.state.cards[this.state.cards.length - 1].keyid : 0
