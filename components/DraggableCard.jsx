@@ -120,13 +120,31 @@ export default class DraggableCard extends Card {
   handleSwipe (ev) {
     console.log(ev.type)
   }
+  setInitialPosition () {
+    var screen = document.getElementById('cards')
+    var card = ReactDOM.findDOMNode(this)
+    var initialPosition = {
+      x: Math.round((screen.offsetWidth - card.offsetWidth) / 2),
+      y: 0,
+      r: this.props.rotate
+
+    }
+
+    this.setState({
+      initialPosition: initialPosition,
+      x: initialPosition.x,
+      y: initialPosition.y,
+      r: initialPosition.r
+    })
+  }
   shouldComponentUpdate (nextProps, nextState) {
     return nextProps.idiscard === nextProps.keyid
   }
   componentDidMount () {
     this.hammer = new Hammer.Manager(ReactDOM.findDOMNode(this))
     this.hammer.add(new Hammer.Pan({threshold: 0}))
-
+    this.setInitialPosition()
+    window.addEventListener('resize', this.setInitialPosition)
     var events = [
       ['panstart panend pancancel panmove', (ev) => {
         ev.preventDefault()
@@ -147,7 +165,7 @@ export default class DraggableCard extends Card {
     this.hammer.stop()
     this.hammer.destroy()
     this.hammer = null
-
+    window.removeEventListener('resize', this.setInitialPosition)
     window.removeEventListener('resize', this.resetPosition)
   }
 }

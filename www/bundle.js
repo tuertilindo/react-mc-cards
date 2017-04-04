@@ -21,10 +21,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
 }
@@ -58,52 +54,18 @@ var Card = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Card.__proto__ || Object.getPrototypeOf(Card)).call(this, props));
 
-    _this.state = { initialPosition: {
-        x: 0,
-        y: 0,
-        r: props.rotate
-
-      },
-      x: 0,
-      y: 0,
-      r: props.rotate };
+    _this.state = {
+      x: props.x || 0,
+      y: props.y || 0,
+      r: props.rotate || 0
+    };
     return _this;
   }
 
   _createClass(Card, [{
     key: 'shouldComponentUpdate',
     value: function shouldComponentUpdate(nextProps, nextState) {
-      return nextState.initialPosition;
-    }
-  }, {
-    key: 'setInitialPosition',
-    value: function setInitialPosition() {
-      var screen = document.getElementById('cards');
-      var card = _reactDom2.default.findDOMNode(this);
-      var initialPosition = {
-        x: Math.round((screen.offsetWidth - card.offsetWidth) / 2),
-        y: 0,
-        r: this.props.rotate
-
-      };
-
-      this.setState({
-        initialPosition: initialPosition,
-        x: initialPosition.x,
-        y: initialPosition.y,
-        r: initialPosition.r
-      });
-    }
-  }, {
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.setInitialPosition();
-      window.addEventListener('resize', this.setInitialPosition);
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      window.removeEventListener('resize', this.setInitialPosition);
+      return false;
     }
   }, {
     key: 'render',
@@ -132,7 +94,7 @@ var Card = function (_React$Component) {
 
 exports.default = Card;
 
-},{"classnames":16,"object-assign":42,"react":195,"react-dom":44}],2:[function(require,module,exports){
+},{"classnames":16,"object-assign":42,"react":195}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -453,36 +415,36 @@ var DraggableCard = function (_Card) {
         var yoff = screen.offsetHeight / 4;
         if (_this.state.x < -xoff) {
           card.addEventListener('webkitTransitionEnd', function () {
-            _CardActions2.default.SlideLeft(_this.props);
+            _CardActions2.default.SlideLeft(_this.props.cardData);
           }, false);
           card.addEventListener('transitionend', function () {
-            _CardActions2.default.SlideLeft(_this.props);
+            _CardActions2.default.SlideLeft(_this.props.cardData);
           }, false);
           _this.discard('left');
         } else if (_this.state.x + (card.offsetWidth - xoff) > screen.offsetWidth) {
           card.addEventListener('webkitTransitionEnd', function () {
             _this.resetPosition();
-            _CardActions2.default.SlideRight(_this.props);
+            _CardActions2.default.SlideRight(_this.props.cardData);
           }, false);
           card.addEventListener('transitionend', function () {
             _this.resetPosition();
-            _CardActions2.default.SlideRight(_this.props);
+            _CardActions2.default.SlideRight(_this.props.cardData);
           }, false);
           _this.discard('right');
         } else if (_this.state.y + (card.offsetHeight - yoff) > screen.offsetHeight) {
           card.addEventListener('webkitTransitionEnd', function () {
-            _CardActions2.default.SlideBottom(_this.props);
+            _CardActions2.default.SlideBottom(_this.props.cardData);
           }, false);
           card.addEventListener('transitionend', function () {
-            _CardActions2.default.SlideBottom(_this.props);
+            _CardActions2.default.SlideBottom(_this.props.cardData);
           }, false);
           _this.discard('bottom');
         } else if (_this.state.y + yoff < 0) {
           card.addEventListener('webkitTransitionEnd', function () {
-            _CardActions2.default.SlideTop(_this.props);
+            _CardActions2.default.SlideTop(_this.props.cardData);
           }, false);
           card.addEventListener('transitionend', function () {
-            _CardActions2.default.SlideTop(_this.props);
+            _CardActions2.default.SlideTop(_this.props.cardData);
           }, false);
           _this.discard('top');
         } else {
@@ -564,6 +526,25 @@ var DraggableCard = function (_Card) {
       console.log(ev.type);
     }
   }, {
+    key: 'setInitialPosition',
+    value: function setInitialPosition() {
+      var screen = document.getElementById('cards');
+      var card = _reactDom2.default.findDOMNode(this);
+      var initialPosition = {
+        x: Math.round((screen.offsetWidth - card.offsetWidth) / 2),
+        y: 0,
+        r: this.props.rotate
+
+      };
+
+      this.setState({
+        initialPosition: initialPosition,
+        x: initialPosition.x,
+        y: initialPosition.y,
+        r: initialPosition.r
+      });
+    }
+  }, {
     key: 'shouldComponentUpdate',
     value: function shouldComponentUpdate(nextProps, nextState) {
       return nextProps.idiscard === nextProps.keyid;
@@ -575,7 +556,8 @@ var DraggableCard = function (_Card) {
 
       this.hammer = new _hammerjs2.default.Manager(_reactDom2.default.findDOMNode(this));
       this.hammer.add(new _hammerjs2.default.Pan({ threshold: 0 }));
-
+      this.setInitialPosition();
+      window.addEventListener('resize', this.setInitialPosition);
       var events = [['panstart panend pancancel panmove', function (ev) {
         ev.preventDefault();
         _this2.panHandlers[ev.type].call(_this2, ev);
@@ -594,7 +576,7 @@ var DraggableCard = function (_Card) {
       this.hammer.stop();
       this.hammer.destroy();
       this.hammer = null;
-
+      window.removeEventListener('resize', this.setInitialPosition);
       window.removeEventListener('resize', this.resetPosition);
     }
   }]);
@@ -708,9 +690,10 @@ var Cards = function (_Reflux$Component) {
       var _this2 = this;
 
       if (this.state.discarded && this.onDiscard instanceof Function) {
-        this.onDiscard(this.state.discarded);
+        var card = this.state.discarded;
+        this.state.discarded = null;
+        this.onDiscard(card);
       }
-      this.state.discarded = null;
       var cardsre = null;
       if (!this.state.error && this.state.cards) {
         var idescard = this.state.cards.length > 0 ? this.state.cards[this.state.cards.length - 1].keyid : 0;

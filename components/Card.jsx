@@ -1,48 +1,18 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 const objectAssign = require('object-assign')
 const classnames = require('classnames')
 export default class Card extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {initialPosition: {
-      x: 0,
-      y: 0,
-      r: props.rotate
-
-    },
-    x: 0,
-    y: 0,
-    r: props.rotate}
+    this.state = {
+      x: props.x || 0,
+      y: props.y || 0,
+      r: props.rotate || 0
+    }
   }
   shouldComponentUpdate (nextProps, nextState) {
-    return nextState.initialPosition
+    return false
   }
-  setInitialPosition () {
-    var screen = document.getElementById('cards')
-    var card = ReactDOM.findDOMNode(this)
-    var initialPosition = {
-      x: Math.round((screen.offsetWidth - card.offsetWidth) / 2),
-      y: 0,
-      r: this.props.rotate
-
-    }
-
-    this.setState({
-      initialPosition: initialPosition,
-      x: initialPosition.x,
-      y: initialPosition.y,
-      r: initialPosition.r
-    })
-  }
-  componentDidMount () {
-    this.setInitialPosition()
-    window.addEventListener('resize', this.setInitialPosition)
-  }
-  componentWillUnmount () {
-    window.removeEventListener('resize', this.setInitialPosition)
-  }
-
   render () {
     var initialTranslate = ''.concat(
       'translate3d(',
