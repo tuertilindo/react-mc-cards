@@ -4,6 +4,7 @@ let CardActions = Reflux.createActions([
   'SlideLeft',
   'SlideRight',
   'SlideTop',
-  'SlideBottom'
+  'SlideBottom',
+  'SetOnDiscardFunction'
 ])
 export default CardActions

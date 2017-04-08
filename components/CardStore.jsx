@@ -50,6 +50,9 @@ export default class CardStore extends Reflux.Store {
       })
     })
   }
+  SetOnDiscardFunction (callback) {
+    this.onDiscard = callback
+  }
   SlideLeft (card) {
     this.discard(card, 'left')
   }
@@ -64,12 +67,14 @@ export default class CardStore extends Reflux.Store {
   }
   discard (card, side) {
     this.state.cards.pop()
-    this.setState({
-      cards: this.state.cards,
-      discarded: {
+    if (this.onDiscard instanceof Function) {
+      this.onDiscard({
         card: card,
         side: side
-      }
+      })
+    }
+    this.setState({
+      cards: this.state.cards
     })
   }
 }

@@ -109,7 +109,7 @@ function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
 }
 
-var CardActions = _reflux2.default.createActions(['NeedCards', 'SlideLeft', 'SlideRight', 'SlideTop', 'SlideBottom']);
+var CardActions = _reflux2.default.createActions(['NeedCards', 'SlideLeft', 'SlideRight', 'SlideTop', 'SlideBottom', 'SetOnDiscardFunction']);
 exports.default = CardActions;
 
 },{"reflux":213}],3:[function(require,module,exports){
@@ -291,6 +291,11 @@ var CardStore = function (_Reflux$Store) {
       });
     }
   }, {
+    key: 'SetOnDiscardFunction',
+    value: function SetOnDiscardFunction(callback) {
+      this.onDiscard = callback;
+    }
+  }, {
     key: 'SlideLeft',
     value: function SlideLeft(card) {
       this.discard(card, 'left');
@@ -314,12 +319,14 @@ var CardStore = function (_Reflux$Store) {
     key: 'discard',
     value: function discard(card, side) {
       this.state.cards.pop();
-      this.setState({
-        cards: this.state.cards,
-        discarded: {
+      if (this.onDiscard instanceof Function) {
+        this.onDiscard({
           card: card,
           side: side
-        }
+        });
+      }
+      this.setState({
+        cards: this.state.cards
       });
     }
   }]);
@@ -595,6 +602,16 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }return target;
+};
+
 var _createClass = function () {
   function defineProperties(target, props) {
     for (var i = 0; i < props.length; i++) {
@@ -672,28 +689,19 @@ var Cards = function (_Reflux$Component) {
       minCount: 5
     }, props);
     _this.store = _CardStore2.default;
-    _this.onDiscard = props.onDiscard;
     return _this;
   }
 
   _createClass(Cards, [{
-    key: 'shouldComponentUpdate',
-    value: function shouldComponentUpdate(nextProps, nextState) {
-      if (nextState.discarded || this.state.cards.length < 1) {
-        return true;
-      }
-      return false;
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      _CardActions2.default.SetOnDiscardFunction(this.props.onDiscard);
     }
   }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
 
-      if (this.state.discarded && this.onDiscard instanceof Function) {
-        var card = this.state.discarded;
-        this.state.discarded = null;
-        this.onDiscard(card);
-      }
       var cardsre = null;
       if (!this.state.error && this.state.cards) {
         var idescard = this.state.cards.length > 0 ? this.state.cards[this.state.cards.length - 1].keyid : 0;
@@ -709,7 +717,7 @@ var Cards = function (_Reflux$Component) {
             keyid: c.keyid
           };
           if (idescard === c.keyid) {
-            return _react2.default.createElement(_DraggableCard2.default, props);
+            return _react2.default.createElement(_DraggableCard2.default, _extends({ onDiscard: _this2.onDiscard }, props));
           } else {
             return _react2.default.createElement(_Card2.default, props);
           }

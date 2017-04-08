@@ -17,20 +17,11 @@ export default class Cards extends Reflux.Component {
       minCount: 5
     }, props)
     this.store = CardStore
-    this.onDiscard = props.onDiscard
   }
-  shouldComponentUpdate (nextProps, nextState) {
-    if (nextState.discarded || this.state.cards.length < 1) {
-      return true
-    }
-    return false
+  componentDidMount () {
+    CardActions.SetOnDiscardFunction(this.props.onDiscard)
   }
   render () {
-    if (this.state.discarded && this.onDiscard instanceof Function) {
-      var card = this.state.discarded
-      this.state.discarded = null
-      this.onDiscard(card)
-    }
     var cardsre = null
     if (!this.state.error && this.state.cards) {
       var idescard = this.state.cards.length > 0 ? this.state.cards[this.state.cards.length - 1].keyid : 0
@@ -46,7 +37,7 @@ export default class Cards extends Reflux.Component {
           keyid: c.keyid
         }
         if (idescard === c.keyid) {
-          return (<DraggableCard {...props} />)
+          return (<DraggableCard onDiscard={this.onDiscard} {...props} />)
         } else {
           return (<Card {...props} />)
         }
